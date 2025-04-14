@@ -28,7 +28,7 @@ interface GalaxyProps {
 }
 
 function Galaxy({ rotation = [0, 0, 0], count }: GalaxyProps) {
-  const ref = useRef<any>();
+  const ref = useRef<any>(null);
   const sphere = useMemo(() => {
     const positions = new Float32Array(count * 3);
     random.inSphere(positions, { radius: 1.5 });

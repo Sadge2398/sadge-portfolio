@@ -1,7 +1,12 @@
-import type { NextConfig } from "next";
+// next.config.js
+const isGithubPages = process.env.GITHUB_PAGES === 'true';
+const repo = 'sadge-portfolio'; 
 
-const nextConfig: NextConfig = {
-  /* config options here */
+module.exports = {
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+  basePath: isGithubPages ? `/${repo}` : '',
+  assetPrefix: isGithubPages ? `/${repo}/` : '',
 };
-
-export default nextConfig;
