@@ -37,8 +37,8 @@ function Galaxy({ count = 5000 }) {
 
 export default function BackgroundLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative w-full h-full">
-      <div className="fixed inset-0 -z-10">
+    <main className="min-h-screen w-full relative">
+      <div className="fixed inset-0 -z-10 h-screen">
         <Canvas camera={{ position: [0, 0, 1] }} style={{ background: 'black' }}>
           <OrbitControls 
             enableZoom={false}
@@ -62,6 +62,6 @@ export default function BackgroundLayout({ children }: { children: React.ReactNo
       <div className="relative z-10">
         {children}
       </div>
-    </div>
+    </main>
   );
 } 

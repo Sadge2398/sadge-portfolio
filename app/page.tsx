@@ -26,7 +26,7 @@ export default function Home() {
 
       <div className="relative z-10 pointer-events-none">
         {/* Hero Section */}
-        <section className="flex h-screen items-center justify-center">
+        <section id="hero" className="flex h-screen items-center justify-center">
           <div className="container mx-auto px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -75,9 +75,21 @@ export default function Home() {
 }
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const targetId = href.replace('#', '');
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({
+        block: 'center',
+      });
+    }
+  };
+
   return (
     <a
       href={href}
+      onClick={handleClick}
       className="text-lg text-gray-300 transition-colors hover:text-purple-300"
     >
       {children}
