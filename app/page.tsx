@@ -34,7 +34,7 @@ export default function Home() {
               transition={{ duration: 0.8 }}
             >
               <h1 className="mb-4 text-6xl font-bold text-white">Sajjad Mahmoodi</h1>
-              <h2 className="mb-8 text-2xl text-purple-300">Frontend Developer</h2>
+              <h2 className="mb-8 text-2xl text-purple-300 font-bold">Frontend Developer</h2>
               <p className="mx-auto mb-12 max-w-2xl text-lg text-gray-300 font-bold">
                 Crafting digital experiences through code. Specialized in building modern web applications
                 with a focus on performance and user experience.
@@ -81,7 +81,8 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
     const element = document.getElementById(targetId);
     if (element) {
       element.scrollIntoView({
-        block: 'center',
+        block: 'start',
+        behavior: 'smooth',
       });
     }
   };

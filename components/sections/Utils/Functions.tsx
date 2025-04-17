@@ -2,7 +2,8 @@ export const handleGoBack = () => {
   const heroSection = document.getElementById('hero');
   if (heroSection) {
     heroSection.scrollIntoView({
-      block: 'center'
+      block: 'center',
+      behavior : 'smooth',
     });
   }
 };
