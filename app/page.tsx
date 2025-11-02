@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Scene from "@/components/threeD/Galaxy";
 import { motion } from "framer-motion";
@@ -14,9 +14,9 @@ export default function Home() {
       y: 0,
       transition: {
         duration: 0.5,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
   return (
     <div className="relative">
@@ -26,18 +26,41 @@ export default function Home() {
 
       <div className="relative z-10 pointer-events-none">
         {/* Hero Section */}
-        <section id="hero" className="flex h-screen items-center justify-center">
-          <div className="container mx-auto px-4 text-center">
+        <section
+          id="hero"
+          className="flex h-screen items-center justify-center"
+        >
+          <div
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0.3)",
+              borderRadius: "24px",
+            }}
+            className="container py-4 mx-auto px-4 text-center pointer-events-none"
+          >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h1 className="mb-4 text-6xl font-bold text-white">Sajjad Mahmoodi</h1>
-              <h2 className="mb-8 text-2xl text-purple-300 font-bold">Frontend Developer</h2>
-              <p className="mx-auto mb-12 max-w-2xl text-lg text-gray-300 font-bold">
-                Crafting digital experiences through code. Specialized in building modern web applications
-                with a focus on performance and user experience.
+              <h1
+                style={{ pointerEvents: "none" }}
+                className="mb-4 text-6xl font-bold text-white pointer-events-none"
+              >
+                Sajjad Mahmoodi
+              </h1>
+              <h2
+                style={{ pointerEvents: "none" }}
+                className="mb-8 text-2xl text-purple-300 font-bold"
+              >
+                Frontend Developer
+              </h2>
+              <p
+                style={{ pointerEvents: "none" }}
+                className="mx-auto mb-12 max-w-2xl text-lg text-gray-300 font-bold"
+              >
+                Crafting digital experiences through code. Specialized in
+                building modern web applications with a focus on performance and
+                user experience.
               </p>
               <motion.nav
                 initial={{ opacity: 0 }}
@@ -45,20 +68,27 @@ export default function Home() {
                 transition={{ delay: 0.5, duration: 0.5 }}
                 className="flex justify-center space-x-8 pointer-events-auto font-bold"
               >
-                <motion.div variants={itemVariants}
+                <motion.div
+                  variants={itemVariants}
                   whileHover={{ y: -5, color: "#a855f7" }}
-                  transition={{ duration: 0.2 }}>
+                  transition={{ duration: 0.2 }}
+                >
                   <NavLink href="#about">About</NavLink>
                 </motion.div>
-                <motion.div variants={itemVariants}
+                <motion.div
+                  variants={itemVariants}
                   whileHover={{ y: -5, color: "#a855f7" }}
-                  transition={{ duration: 0.2 }}>
+                  transition={{ duration: 0.2 }}
+                >
                   <NavLink href="#projects">Projects</NavLink>
                 </motion.div>
-                <motion.div variants={itemVariants}
+                <motion.div
+                  variants={itemVariants}
                   whileHover={{ y: -5, color: "#a855f7" }}
-                  transition={{ duration: 0.2 }}>
-                  <NavLink href="#contact">Contact</NavLink></motion.div>
+                  transition={{ duration: 0.2 }}
+                >
+                  <NavLink href="#contact">Contact</NavLink>
+                </motion.div>
               </motion.nav>
             </motion.div>
           </div>
@@ -74,15 +104,21 @@ export default function Home() {
   );
 }
 
-function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+function NavLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    const targetId = href.replace('#', '');
+    const targetId = href.replace("#", "");
     const element = document.getElementById(targetId);
     if (element) {
       element.scrollIntoView({
-        block: 'start',
-        behavior: 'smooth',
+        block: "start",
+        behavior: "smooth",
       });
     }
   };
@@ -97,5 +133,3 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
     </a>
   );
 }
-
-

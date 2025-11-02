@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
-import { handleGoBack } from './Utils/Functions';
+import { motion } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
+import { handleGoBack } from "./Utils/Functions";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -8,9 +8,9 @@ const containerVariants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.2,
-      duration: 0.8
-    }
-  }
+      duration: 0.8,
+    },
+  },
 };
 
 const itemVariants = {
@@ -18,8 +18,8 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5 }
-  }
+    transition: { duration: 0.5 },
+  },
 };
 
 const listItemVariants = {
@@ -27,13 +27,11 @@ const listItemVariants = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.3 }
-  }
+    transition: { duration: 0.3 },
+  },
 };
 
 export default function About() {
-
-
   return (
     <section id="about" className="min-h-screen py-20">
       <motion.div
@@ -55,7 +53,7 @@ export default function About() {
           <span>Back</span>
         </motion.button>
 
-        <motion.h2 
+        <motion.h2
           variants={itemVariants}
           className="mb-12 text-4xl font-bold text-white pt-12"
         >
@@ -63,66 +61,97 @@ export default function About() {
         </motion.h2>
 
         <div className="grid gap-12 md:grid-cols-2">
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             className="space-y-6 text-gray-300"
           >
             <motion.p variants={itemVariants}>
-              I'm a passionate Frontendnd developer with expertise in building modern web applications.
-              My journey in software development started three years ago and i obsessed since then, and I've been crafting
-              digital experiences ever since.
+              I'm a passionate Frontendnd developer with expertise in building
+              modern web applications. My journey in software development
+              started three years ago and i obsessed since then, and I've been
+              crafting digital experiences ever since.
             </motion.p>
-            <motion.p variants={itemVariants}>
-              I specialize in:
-            </motion.p>
-            <motion.ul 
+            <motion.p variants={itemVariants}>I specialize in:</motion.p>
+            <motion.ul
               variants={containerVariants}
               className="list-inside list-disc space-y-2"
             >
-              <motion.li whileHover={{ scale: 1.05 , x: 10 , color: "purple"}} variants={listItemVariants}>
+              <motion.li
+                whileHover={{ scale: 1.05, x: 10, color: "purple" }}
+                variants={listItemVariants}
+              >
                 Frontend Development (React, Next.js, TypeScript)
               </motion.li>
-              <motion.li variants={listItemVariants} whileHover={{ scale: 1.05 , x: 10 , color: "purple"}}>
-                Frontend Library (MUI, TailwindCss, Zustand, Framer Motion, Three.js, ...)
+              <motion.li
+                variants={listItemVariants}
+                whileHover={{ scale: 1.05, x: 10, color: "purple" }}
+              >
+                Frontend Library (MUI, TailwindCss, Zustand, Framer Motion,
+                Three.js, ...)
               </motion.li>
-              <motion.li variants={listItemVariants} whileHover={{ scale: 1.05 , x: 10 , color: "purple"}}>
+              <motion.li
+                variants={listItemVariants}
+                whileHover={{ scale: 1.05, x: 10, color: "purple" }}
+              >
                 UI/UX Design and Implementation
               </motion.li>
-              <motion.li variants={listItemVariants} whileHover={{ scale: 1.05 , x: 10 , color: "purple"}}>
+              <motion.li
+                variants={listItemVariants}
+                whileHover={{ scale: 1.05, x: 10, color: "purple" }}
+              >
                 Learning new technologies and tools (backend, Sql, ...)
               </motion.li>
             </motion.ul>
             <motion.p variants={itemVariants}>
-              When I'm not coding, you can find me Gaming, Watching F1 races or hanging out with friends.
+              When I'm not coding, you can find me Gaming, Watching F1 races or
+              hanging out with friends.
             </motion.p>
           </motion.div>
 
-          <motion.div
-            variants={containerVariants}
-            className="space-y-6"
-          >
-            <motion.div 
+          <motion.div variants={containerVariants} className="space-y-6">
+            <motion.div
               variants={itemVariants}
               className="rounded-lg bg-black/30 p-6 backdrop-blur-sm"
             >
-              <motion.h3 
+              <motion.h3
                 variants={itemVariants}
                 className="mb-4 text-2xl font-bold text-purple-300"
               >
                 Experience
               </motion.h3>
-              <motion.ul 
+              <motion.ul
                 variants={containerVariants}
                 className="space-y-4 text-gray-300"
               >
                 <motion.li variants={itemVariants}>
                   <h4 className="font-bold">Jihaad</h4>
-                  <p className="text-sm text-purple-300">Frontend Developer • 2022 - 2024</p>
-                  <p className="mt-2">Learned the basics of frontend development and worked on a few projects.</p>
+                  <p className="text-sm text-purple-300">
+                    Frontend Developer • 2022 - 2024
+                  </p>
+                  <p className="mt-2">
+                    Learned the basics of frontend development and worked on a
+                    few projects.
+                  </p>
                 </motion.li>
                 <motion.li variants={itemVariants}>
-                  <h4 className="font-semibold text-purple-300">Freelancer, Self-taught, internship • 2024 - Present</h4>
-                  <p className="mt-2">Worked on a few projects and learned more every day.</p>
+                  <h4 className="font-semibold text-purple-300">
+                    Freelancer, Self-taught, internship • 2024 - 2025
+                  </h4>
+                  <p className="mt-2">
+                    Worked on a few projects and learned more every day.
+                  </p>
+                </motion.li>
+                <motion.li variants={itemVariants}>
+                  <h4 className="font-semibold text-purple-300">
+                    Chadco, Frontend Developer • early 2025 - Present
+                  </h4>
+                  <p className="mt-2">
+                    Thrived in a fast-paced environment that values continuous
+                    learning and rapid delivery. Focused on creating exceptional
+                    user experiences with high-performance applications, while
+                    implementing data scraping, analysis, and new feature
+                    development alongside a high-performing team.
+                  </p>
                 </motion.li>
               </motion.ul>
             </motion.div>
@@ -131,4 +160,4 @@ export default function About() {
       </motion.div>
     </section>
   );
-} 
+}

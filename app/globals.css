@@ -126,8 +126,6 @@
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  overflow-y: auto;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -176,8 +174,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
-html, body {
+html {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+  scroll-behavior: smooth;
+}
+
+html, body {
   scroll-behavior: smooth;
 }
