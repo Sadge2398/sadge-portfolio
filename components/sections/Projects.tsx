@@ -37,7 +37,7 @@ export default function Projects() {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
-        className="container mx-auto px-4 bg-black/35 backdrop-blur-[1px] rounded-lg pb-12 font-bold relative"
+        className="container mx-auto px-4 bg-black/50 rounded-lg pb-12 font-bold relative"
       >
         <motion.button
           whileHover={{ scale: 1.1 }}
@@ -45,7 +45,7 @@ export default function Projects() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
           onClick={handleGoBack}
-          className="absolute top-2 left-4 flex items-center gap-2 text-gray-300 hover:text-purple-300 transition-colors p-2 rounded-lg bg-black/20 backdrop-blur-sm"
+          className="absolute top-2 left-4 flex items-center gap-2 text-gray-300 hover:text-purple-300 transition-colors p-2 rounded-lg bg-black/40"
         >
           <ArrowLeft size={20} />
           <span>Back</span>
@@ -61,7 +61,7 @@ export default function Projects() {
               whileInView={{ opacity: 1,  }}
               transition={{ duration: 0.7, delay: index * 0.3 }}
               viewport={{ once: true }}
-              className="group rounded-lg bg-black/30 p-6 backdrop-blur-sm transition-all hover:bg-black/40"
+              className="group rounded-lg bg-black/45 p-6 transition-all hover:bg-black/55"
             >
               {project.image && (
                 <div className="mb-4 overflow-hidden rounded-lg">

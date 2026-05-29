@@ -1,10 +1,10 @@
 "use client";
 
-import Scene from "@/components/threeD/Galaxy";
 import { motion } from "framer-motion";
 import About from "@/components/sections/About";
 import Projects from "@/components/sections/Projects";
 import Contact from "@/components/sections/Contact";
+import ScrollNav from "@/components/sections/ScrollNav";
 
 export default function Home() {
   const itemVariants = {
@@ -20,8 +20,8 @@ export default function Home() {
   };
   return (
     <div className="relative">
-      <div className="fixed inset-0 z-0 pointer-events-auto">
-        <Scene />
+      <div className="pointer-events-auto">
+        <ScrollNav />
       </div>
 
       <div className="relative z-10 pointer-events-none">
@@ -44,13 +44,13 @@ export default function Home() {
             >
               <h1
                 style={{ pointerEvents: "none" }}
-                className="mb-4 text-6xl font-bold text-white pointer-events-none"
+                className="mb-4 text-5xl md:text-7xl font-bold text-white pointer-events-none text-glow"
               >
                 Sajjad Mahmoodi
               </h1>
               <h2
                 style={{ pointerEvents: "none" }}
-                className="mb-8 text-2xl text-purple-300 font-bold"
+                className="mb-8 text-2xl md:text-3xl font-bold text-gradient"
               >
                 Frontend Developer
               </h2>
@@ -92,6 +92,22 @@ export default function Home() {
               </motion.nav>
             </motion.div>
           </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 1 }}
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-purple-300/80"
+          >
+            <span className="text-xs uppercase tracking-[0.3em]">Scroll</span>
+            <motion.div
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+              className="flex h-9 w-5 items-start justify-center rounded-full border-2 border-purple-300/60 p-1"
+            >
+              <span className="block h-2 w-1 rounded-full bg-purple-300" />
+            </motion.div>
+          </motion.div>
         </section>
 
         <div className="pointer-events-auto">

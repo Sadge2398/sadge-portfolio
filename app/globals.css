@@ -157,15 +157,24 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Special text effects */
 .text-gradient {
-  background: linear-gradient(90deg, #a855f7, #3b82f6);
+  background: linear-gradient(90deg, #f0abfc, #a855f7, #38bdf8);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  animation: gradient-pan 6s ease infinite;
+}
+
+@keyframes gradient-pan {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
 }
 
 /* Add some sci-fi effects */
 .text-glow {
-  text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+  text-shadow: 0 0 18px rgba(192, 107, 255, 0.55),
+    0 0 40px rgba(56, 189, 248, 0.25);
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

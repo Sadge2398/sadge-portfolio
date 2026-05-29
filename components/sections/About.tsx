@@ -39,7 +39,7 @@ export default function About() {
         whileInView="visible"
         viewport={{ once: true }}
         variants={containerVariants}
-        className="container mx-auto px-4 bg-black/35 backdrop-blur-[1px] rounded-lg pb-12 font-bold relative"
+        className="container mx-auto px-4 bg-black/50 rounded-lg pb-12 font-bold relative"
       >
         <motion.button
           initial={{ opacity: 0, x: -20 }}
@@ -47,7 +47,7 @@ export default function About() {
           transition={{ duration: 0.5 }}
           whileHover={{ scale: 1.1 }}
           onClick={handleGoBack}
-          className="absolute top-2 left-4 flex items-center gap-2 text-gray-300 hover:text-purple-300 transition-colors p-2 rounded-lg bg-black/20 backdrop-blur-sm"
+          className="absolute top-2 left-4 flex items-center gap-2 text-gray-300 hover:text-purple-300 transition-colors p-2 rounded-lg bg-black/40"
         >
           <ArrowLeft size={20} />
           <span>Back</span>
@@ -111,7 +111,7 @@ export default function About() {
           <motion.div variants={containerVariants} className="space-y-6">
             <motion.div
               variants={itemVariants}
-              className="rounded-lg bg-black/30 p-6 backdrop-blur-sm"
+              className="rounded-lg bg-black/45 p-6"
             >
               <motion.h3
                 variants={itemVariants}
