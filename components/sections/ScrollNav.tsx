@@ -3,6 +3,8 @@
 import { motion, useScroll, useSpring } from "framer-motion";
 import { useEffect, useState } from "react";
 
+import { consumeClickIfDragged } from "@/lib/cameraStore";
+
 const SECTIONS = [
   { id: "hero", label: "Home" },
   { id: "about", label: "About" },
@@ -37,6 +39,7 @@ export default function ScrollNav() {
   }, []);
 
   const scrollTo = (id: string) => {
+    if (consumeClickIfDragged()) return;
     document
       .getElementById(id)
       ?.scrollIntoView({ behavior: "smooth", block: "start" });

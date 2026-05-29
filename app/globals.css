@@ -192,3 +192,21 @@ html {
 html, body {
   scroll-behavior: smooth;
 }
+
+/* Hero copy is decorative — never selectable */
+#hero {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* While orbiting the galaxy: no selection, no scroll, grabbing cursor */
+body.galaxy-exploring {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  cursor: grabbing !important;
+}
+
+body.galaxy-exploring * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}

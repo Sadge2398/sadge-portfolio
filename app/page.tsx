@@ -5,6 +5,7 @@ import About from "@/components/sections/About";
 import Projects from "@/components/sections/Projects";
 import Contact from "@/components/sections/Contact";
 import ScrollNav from "@/components/sections/ScrollNav";
+import { consumeClickIfDragged } from "@/lib/cameraStore";
 
 export default function Home() {
   const itemVariants = {
@@ -28,7 +29,7 @@ export default function Home() {
         {/* Hero Section */}
         <section
           id="hero"
-          className="flex h-screen items-center justify-center"
+          className="flex h-screen items-center justify-center select-none"
         >
           <div
             style={{
@@ -50,18 +51,18 @@ export default function Home() {
               </h1>
               <h2
                 style={{ pointerEvents: "none" }}
-                className="mb-8 text-2xl md:text-3xl font-bold text-gradient"
+                className="mb-6 text-2xl md:text-3xl font-bold text-gradient"
               >
-                Frontend Developer
+                Full Stack Developer
               </h2>
               <p
                 style={{ pointerEvents: "none" }}
                 className="mx-auto mb-12 max-w-2xl text-lg text-gray-300 font-bold"
               >
-                Crafting digital experiences through code. Specialized in
-                building modern web applications with a focus on performance and
-                user experience.
+                Building end-to-end digital products — from polished interfaces
+                and mobile apps to scalable APIs and databases.
               </p>
+
               <motion.nav
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -97,8 +98,11 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2, duration: 1 }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-purple-300/80"
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-purple-300/80"
           >
+            <span className="text-[10px] uppercase tracking-[0.25em] text-purple-300/60">
+              Ctrl + drag to orbit · Ctrl + scroll to zoom
+            </span>
             <span className="text-xs uppercase tracking-[0.3em]">Scroll</span>
             <motion.div
               animate={{ y: [0, 8, 0] }}
@@ -128,6 +132,7 @@ function NavLink({
   children: React.ReactNode;
 }) {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (consumeClickIfDragged()) return;
     e.preventDefault();
     const targetId = href.replace("#", "");
     const element = document.getElementById(targetId);

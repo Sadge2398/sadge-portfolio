@@ -1,4 +1,7 @@
+import { consumeClickIfDragged } from "@/lib/cameraStore";
+
 export const handleGoBack = () => {
+  if (consumeClickIfDragged()) return;
   const heroSection = document.getElementById('hero');
   if (heroSection) {
     heroSection.scrollIntoView({

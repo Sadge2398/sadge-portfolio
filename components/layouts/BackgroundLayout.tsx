@@ -6,22 +6,46 @@ import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import { KernelSize } from "postprocessing";
 import { Galaxy } from "@/components/threeD/Galaxy";
 import { scrollState, advanceScroll, useScrollSync } from "@/lib/scrollStore";
+import {
+  cameraState,
+  advanceCamera,
+  useCameraControls,
+} from "@/lib/cameraStore";
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
 
 /**
- * Drives the camera each frame from the shared scroll store: as the user
- * scrolls the camera pulls back and cranes upward (revealing the spiral from a
- * higher angle), with a soft pointer parallax on top.
+ * Scroll-driven base position + optional Ctrl orbit/zoom, always looking at
+ * the galaxy centre and clamped to a reasonable viewing shell.
  */
 function CameraRig() {
   const { camera } = useThree();
 
   useFrame((_, delta) => {
     advanceScroll(delta);
+    advanceCamera(delta);
+
     const s = scrollState.smooth;
 
-    const targetX = scrollState.pointerX * 0.6;
-    const targetY = 0.4 + s * 2.6 + scrollState.pointerY * -0.3;
-    const targetZ = 6.2 + s * 3.2;
+    const baseX = scrollState.pointerX * 0.6;
+    const baseY = 0.4 + s * 2.6 + scrollState.pointerY * -0.3;
+    const baseZ = 6.2 + s * 3.2;
+
+    const baseR = Math.sqrt(baseX * baseX + baseY * baseY + baseZ * baseZ);
+    let polar = Math.acos(clamp(baseY / baseR, -1, 1));
+    let azimuth = Math.atan2(baseX, baseZ);
+
+    azimuth += cameraState.smoothAzimuth;
+    polar += cameraState.smoothPolar;
+
+    const finalR = clamp(baseR + cameraState.smoothDistance, 3.8, 10.5);
+    polar = clamp(polar, 0.28, 1.52);
+
+    const targetX = finalR * Math.sin(polar) * Math.sin(azimuth);
+    const targetY = finalR * Math.cos(polar);
+    const targetZ = finalR * Math.sin(polar) * Math.cos(azimuth);
 
     const k = Math.min(1, delta * 2.2);
     camera.position.x += (targetX - camera.position.x) * k;
@@ -39,6 +63,7 @@ export default function BackgroundLayout({
   children: React.ReactNode;
 }) {
   useScrollSync();
+  useCameraControls();
 
   return (
     <main className="w-full relative">

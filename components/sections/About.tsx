@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { handleGoBack } from "./Utils/Functions";
+import { STACK } from "@/lib/stack";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -30,6 +31,12 @@ const listItemVariants = {
     transition: { duration: 0.3 },
   },
 };
+
+const stackSections = [
+  { title: "Frontend", items: STACK.frontend },
+  { title: "Backend", items: STACK.backend },
+  { title: "Mobile", items: STACK.mobile },
+] as const;
 
 export default function About() {
   return (
@@ -66,45 +73,37 @@ export default function About() {
             className="space-y-6 text-gray-300"
           >
             <motion.p variants={itemVariants}>
-              I'm a passionate Frontendnd developer with expertise in building
-              modern web applications. My journey in software development
-              started three years ago and i obsessed since then, and I've been
-              crafting digital experiences ever since.
+              I&apos;m a passionate Full Stack developer who builds across the
+              entire product — responsive web apps, reliable backend services,
+              and cross-platform mobile experiences. My journey started three
+              years ago and I&apos;ve been obsessed with shipping polished,
+              performant software ever since.
             </motion.p>
-            <motion.p variants={itemVariants}>I specialize in:</motion.p>
-            <motion.ul
-              variants={containerVariants}
-              className="list-inside list-disc space-y-2"
-            >
-              <motion.li
-                whileHover={{ scale: 1.05, x: 10, color: "purple" }}
-                variants={listItemVariants}
-              >
-                Frontend Development (React, Next.js, TypeScript)
-              </motion.li>
-              <motion.li
-                variants={listItemVariants}
-                whileHover={{ scale: 1.05, x: 10, color: "purple" }}
-              >
-                Frontend Library (MUI, TailwindCss, Zustand, Framer Motion,
-                Three.js, ...)
-              </motion.li>
-              <motion.li
-                variants={listItemVariants}
-                whileHover={{ scale: 1.05, x: 10, color: "purple" }}
-              >
-                UI/UX Design and Implementation
-              </motion.li>
-              <motion.li
-                variants={listItemVariants}
-                whileHover={{ scale: 1.05, x: 10, color: "purple" }}
-              >
-                Learning new technologies and tools (backend, Sql, ...)
-              </motion.li>
-            </motion.ul>
+            <motion.p variants={itemVariants}>My main stack:</motion.p>
+            <motion.div variants={containerVariants} className="space-y-5">
+              {stackSections.map(({ title, items }) => (
+                <motion.div key={title} variants={itemVariants}>
+                  <h4 className="mb-2 text-sm uppercase tracking-widest text-purple-300">
+                    {title}
+                  </h4>
+                  <motion.ul className="flex flex-wrap gap-2">
+                    {items.map((tech) => (
+                      <motion.li
+                        key={tech}
+                        whileHover={{ scale: 1.05, color: "purple" }}
+                        variants={listItemVariants}
+                        className="rounded-full bg-purple-500/15 px-3 py-1 text-sm text-purple-200"
+                      >
+                        {tech}
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                </motion.div>
+              ))}
+            </motion.div>
             <motion.p variants={itemVariants}>
-              When I'm not coding, you can find me Gaming, Watching F1 races or
-              hanging out with friends.
+              When I&apos;m not coding, you can find me gaming, watching F1
+              races, or hanging out with friends.
             </motion.p>
           </motion.div>
 
@@ -129,28 +128,27 @@ export default function About() {
                     Frontend Developer • 2022 - 2024
                   </p>
                   <p className="mt-2">
-                    Learned the basics of frontend development and worked on a
-                    few projects.
+                    Learned the fundamentals of frontend development and shipped
+                    real-world projects under tight deadlines.
                   </p>
                 </motion.li>
                 <motion.li variants={itemVariants}>
                   <h4 className="font-semibold text-purple-300">
-                    Freelancer, Self-taught, internship • 2024 - 2025
+                    Freelancer, Self-taught, Internship • 2024 - 2025
                   </h4>
                   <p className="mt-2">
-                    Worked on a few projects and learned more every day.
+                    Expanded into backend APIs, databases, and mobile — building
+                    full products end to end for clients and personal projects.
                   </p>
                 </motion.li>
                 <motion.li variants={itemVariants}>
                   <h4 className="font-semibold text-purple-300">
-                    Chadco, Frontend Developer • early 2025 - Present
+                    Chadco, Full Stack Developer • early 2025 - Present
                   </h4>
                   <p className="mt-2">
-                    Thrived in a fast-paced environment that values continuous
-                    learning and rapid delivery. Focused on creating exceptional
-                    user experiences with high-performance applications, while
-                    implementing data scraping, analysis, and new feature
-                    development alongside a high-performing team.
+                    Thrived in a fast-paced environment delivering high-performance
+                    web apps, backend integrations, and data-driven features
+                    alongside a high-performing team.
                   </p>
                 </motion.li>
               </motion.ul>

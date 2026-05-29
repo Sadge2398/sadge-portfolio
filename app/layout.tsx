@@ -22,8 +22,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sajjad Mahmoodi | Frontend Developer",
-  description: "Frontend Developer specializing in modern web applications",
+  title: "Sajjad Mahmoodi | Full Stack Developer",
+  description:
+    "Full Stack Developer building modern web, backend, and mobile applications",
 };
 
 export default function RootLayout({
