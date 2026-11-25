@@ -11,7 +11,9 @@ const stackSections = [
 ] as const;
 
 const experience = [
-  { company: "Chadco", role: "Full Stack Developer", dates: "Early 2025 – present", description: "Build web applications, connect backend services, and develop data-driven features as part of the product team." },
+  { company: "Freelance", role: "Freelance Developer", dates: "2026 – present", description: "Build digital products independently for clients." },
+  { company: "First Principle", role: "AI-native startup", dates: "2026", description: "Contributed to product development at an AI-native startup." },
+  { company: "Chadco", role: "Full Stack Developer", dates: "Early 2025 – early 2026", description: "Built web applications, connected backend services, and developed data-driven features as part of the product team." },
   { company: "Freelance & internships", role: "Independent development & learning", dates: "2024 – 2025", description: "Expanded into backend APIs, databases, and cross-platform mobile development through client work and personal projects." },
   { company: "Jihaad", role: "Frontend Developer", dates: "2022 – 2024", description: "Built frontend features for real-world projects while learning to deliver to tight deadlines." },
 ] as const;
