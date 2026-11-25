@@ -1,62 +1,32 @@
-import { motion } from 'framer-motion';
-import { ArrowLeft, Github, Mail, Send } from 'lucide-react';
-import { handleGoBack } from './Utils/Functions';
+"use client";
+
+import { motion } from "framer-motion";
+import { Github, Mail, Send } from "lucide-react";
 
 export default function Contact() {
   return (
-    <section id="contact" className="min-h-screen py-20">
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="container mx-auto px-4 bg-black/50 rounded-lg pb-12 font-bold relative"
-      >
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          onClick={handleGoBack}
-          className="absolute top-2 left-4 flex items-center gap-2 text-gray-300 hover:text-purple-300 transition-colors p-2 rounded-lg bg-black/40"
-        >
-          <ArrowLeft size={20} />
-          <span>Back</span>
-        </motion.button>
-
-        <h2 className="mb-12 text-4xl font-bold text-white pt-12">Contact Me</h2>
-
-        <div className="space-y-6 text-gray-300 font-bold text-xl">
-          <p>Feel free to reach out to me through any of the following channels:</p>
-          <div className="flex flex-col gap-4">
-            <a
-              href="mailto:sajjadshz14@gmail.com"
-              className="flex items-center gap-2 text-gray-300 hover:text-purple-300 transition-colors"
-            >
-              <Mail size={20} />
-              <span>Email: sajjadshz14@gmail.com</span>
-            </a>
-            <a
-              href="https://t.me/Sadge_CC"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-gray-300 hover:text-purple-300 transition-colors"
-            >
-              <Send size={20} />
-              <span>Telegram: Sajjad mahmoodi</span>
-            </a>
-            <a
-              href="https://github.com/Sadge2398"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-gray-300 hover:text-purple-300 transition-colors"
-            >
-              <Github size={20} />
-              <span>GitHub: github.com/Sadge</span>
-            </a>
-          </div>
+    <section id="contact" aria-labelledby="contact-title" className="portfolio-section contact-section">
+      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.5 }} className="section-panel">
+        <a href="#hero" className="back-link">Back to home</a>
+        <p className="eyebrow mt-7">Let&apos;s connect</p>
+        <h2 id="contact-title" className="section-title">Have something in mind?</h2>
+        <p className="section-intro">Want to talk about a project, a role, or something I&apos;ve built? Send me a message.</p>
+        <div className="mt-9 grid gap-4 lg:grid-cols-3">
+          <a href="mailto:sajjadshz14@gmail.com" className="contact-card">
+            <Mail size={22} aria-hidden="true" />
+            <span><span className="contact-label">Email me</span><span className="contact-value">sajjadshz14@gmail.com</span></span>
+          </a>
+          <a href="https://t.me/Sadge_CC" target="_blank" rel="noopener noreferrer" className="contact-card">
+            <Send size={22} aria-hidden="true" />
+            <span><span className="contact-label">Chat on Telegram</span><span className="contact-value">@Sadge_CC</span></span>
+          </a>
+          <a href="https://github.com/Sadge2398" target="_blank" rel="noopener noreferrer" className="contact-card">
+            <Github size={22} aria-hidden="true" />
+            <span><span className="contact-label">Explore my GitHub</span><span className="contact-value">Sadge2398</span></span>
+          </a>
         </div>
+        <p className="mt-10 border-t border-white/10 pt-5 text-sm text-slate-400">Sajjad Mahmoodi · Full Stack &amp; AI Developer</p>
       </motion.div>
     </section>
   );
-} 
+}

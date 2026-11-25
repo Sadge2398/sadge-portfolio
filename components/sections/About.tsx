@@ -1,159 +1,66 @@
+"use client";
+
 import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
-import { handleGoBack } from "./Utils/Functions";
 import { STACK } from "@/lib/stack";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      duration: 0.8,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 },
-  },
-};
-
-const listItemVariants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.3 },
-  },
-};
 
 const stackSections = [
   { title: "Frontend", items: STACK.frontend },
   { title: "Backend", items: STACK.backend },
   { title: "Mobile", items: STACK.mobile },
+  { title: "Agentic AI", items: STACK.ai },
+] as const;
+
+const experience = [
+  { company: "Chadco", role: "Full Stack Developer", dates: "Early 2025 – present", description: "Build web applications, connect backend services, and develop data-driven features as part of the product team." },
+  { company: "Freelance & internships", role: "Independent development & learning", dates: "2024 – 2025", description: "Expanded into backend APIs, databases, and cross-platform mobile development through client work and personal projects." },
+  { company: "Jihaad", role: "Frontend Developer", dates: "2022 – 2024", description: "Built frontend features for real-world projects while learning to deliver to tight deadlines." },
 ] as const;
 
 export default function About() {
   return (
-    <section id="about" className="min-h-screen py-20">
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={containerVariants}
-        className="container mx-auto px-4 bg-black/50 rounded-lg pb-12 font-bold relative"
-      >
-        <motion.button
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          whileHover={{ scale: 1.1 }}
-          onClick={handleGoBack}
-          className="absolute top-2 left-4 flex items-center gap-2 text-gray-300 hover:text-purple-300 transition-colors p-2 rounded-lg bg-black/40"
-        >
-          <ArrowLeft size={20} />
-          <span>Back</span>
-        </motion.button>
-
-        <motion.h2
-          variants={itemVariants}
-          className="mb-12 text-4xl font-bold text-white pt-12"
-        >
-          About Me
-        </motion.h2>
-
-        <div className="grid gap-12 md:grid-cols-2">
-          <motion.div
-            variants={containerVariants}
-            className="space-y-6 text-gray-300"
-          >
-            <motion.p variants={itemVariants}>
-              I&apos;m a passionate Full Stack developer who builds across the
-              entire product — responsive web apps, reliable backend services,
-              and cross-platform mobile experiences. My journey started three
-              years ago and I&apos;ve been obsessed with shipping polished,
-              performant software ever since.
-            </motion.p>
-            <motion.p variants={itemVariants}>My main stack:</motion.p>
-            <motion.div variants={containerVariants} className="space-y-5">
+    <section id="about" aria-labelledby="about-title" className="portfolio-section">
+      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.5 }} className="section-panel">
+        <a href="#hero" className="back-link">Back to home</a>
+        <p className="eyebrow mt-7">A little about me</p>
+        <h2 id="about-title" className="section-title">From interface to infrastructure.</h2>
+        <div className="mt-9 grid gap-10 lg:grid-cols-2 lg:gap-14">
+          <div className="space-y-7">
+            <p className="leading-relaxed text-slate-300">
+              I&apos;m Sajjad, a full stack developer building web, mobile, and agentic AI applications.
+              I started in frontend development in 2022, then expanded into APIs, databases,
+              and cross-platform apps. I enjoy connecting those pieces into a complete product.
+            </p>
+            <div className="agentic-summary">
+              <h3 className="font-sans text-base font-semibold text-purple-200">Agentic architecture</h3>
+              <p className="mt-3 leading-relaxed text-slate-300">
+                I build agent orchestration, tool calling, retrieval-augmented
+                generation (RAG), and workflow automation with LangGraph,
+                LangChain, model SDKs, and custom code.
+              </p>
+            </div>
+            <div className="space-y-6">
               {stackSections.map(({ title, items }) => (
-                <motion.div key={title} variants={itemVariants}>
-                  <h4 className="mb-2 text-sm uppercase tracking-widest text-purple-300">
-                    {title}
-                  </h4>
-                  <motion.ul className="flex flex-wrap gap-2">
-                    {items.map((tech) => (
-                      <motion.li
-                        key={tech}
-                        whileHover={{ scale: 1.05, color: "purple" }}
-                        variants={listItemVariants}
-                        className="rounded-full bg-purple-500/15 px-3 py-1 text-sm text-purple-200"
-                      >
-                        {tech}
-                      </motion.li>
-                    ))}
-                  </motion.ul>
-                </motion.div>
+                <div key={title}>
+                  <h3 className="mb-3 font-sans text-sm font-semibold uppercase tracking-widest text-purple-200">{title}</h3>
+                  <ul className="flex flex-wrap gap-2">{items.map((tech) => <li key={tech} className="tech-tag">{tech}</li>)}</ul>
+                </div>
               ))}
-            </motion.div>
-            <motion.p variants={itemVariants}>
-              When I&apos;m not coding, you can find me gaming, watching F1
-              races, or hanging out with friends.
-            </motion.p>
-          </motion.div>
-
-          <motion.div variants={containerVariants} className="space-y-6">
-            <motion.div
-              variants={itemVariants}
-              className="rounded-lg bg-black/45 p-6"
-            >
-              <motion.h3
-                variants={itemVariants}
-                className="mb-4 text-2xl font-bold text-purple-300"
-              >
-                Experience
-              </motion.h3>
-              <motion.ul
-                variants={containerVariants}
-                className="space-y-4 text-gray-300"
-              >
-                <motion.li variants={itemVariants}>
-                  <h4 className="font-bold">Jihaad</h4>
-                  <p className="text-sm text-purple-300">
-                    Frontend Developer • 2022 - 2024
-                  </p>
-                  <p className="mt-2">
-                    Learned the fundamentals of frontend development and shipped
-                    real-world projects under tight deadlines.
-                  </p>
-                </motion.li>
-                <motion.li variants={itemVariants}>
-                  <h4 className="font-semibold text-purple-300">
-                    Freelancer, Self-taught, Internship • 2024 - 2025
-                  </h4>
-                  <p className="mt-2">
-                    Expanded into backend APIs, databases, and mobile — building
-                    full products end to end for clients and personal projects.
-                  </p>
-                </motion.li>
-                <motion.li variants={itemVariants}>
-                  <h4 className="font-semibold text-purple-300">
-                    Chadco, Full Stack Developer • early 2025 - Present
-                  </h4>
-                  <p className="mt-2">
-                    Thrived in a fast-paced environment delivering high-performance
-                    web apps, backend integrations, and data-driven features
-                    alongside a high-performing team.
-                  </p>
-                </motion.li>
-              </motion.ul>
-            </motion.div>
-          </motion.div>
+            </div>
+            <p className="border-t border-white/10 pt-6 text-sm leading-relaxed text-slate-400">Away from the keyboard: gaming, Formula 1, and time with friends.</p>
+          </div>
+          <div>
+            <h3 className="mb-6 text-xl font-semibold text-purple-200">Experience</h3>
+            <ol className="experience-list">
+              {experience.map((job) => (
+                <li key={job.company}>
+                  <p className="text-sm text-slate-400">{job.dates}</p>
+                  <h4 className="mt-2 font-sans text-lg font-semibold text-white">{job.company}</h4>
+                  <p className="mt-1 text-sm text-purple-200">{job.role}</p>
+                  <p className="mt-3 leading-relaxed text-slate-300">{job.description}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       </motion.div>
     </section>

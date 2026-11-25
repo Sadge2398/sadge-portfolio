@@ -3,7 +3,9 @@
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
+import { useReducedMotion } from "framer-motion";
 import { scrollState } from "@/lib/scrollStore";
+import { cameraState } from "@/lib/galaxyControls";
 
 interface GalaxyProps {
   /** Number of disk stars. */
@@ -15,11 +17,6 @@ interface GalaxyProps {
 const vertexShader = /* glsl */ `
   uniform float uTime;
   uniform float uSize;
-  uniform float uWaveAmp;
-  uniform float uWaveFreq;
-  uniform float uWaveSpeed;
-  uniform float uSpin;
-  uniform float uScroll;
   uniform float uPixelRatio;
 
   attribute vec3 aColor;
@@ -32,21 +29,10 @@ const vertexShader = /* glsl */ `
   void main() {
     vec3 p = position;
     float r = length(p.xz);
-    float baseAngle = atan(p.z, p.x);
-
-    // Differential rotation: inner stars sweep faster than the outskirts.
-    float angle = baseAngle + uTime * uSpin / (r * 0.6 + 0.35);
-    p.x = cos(angle) * r;
-    p.z = sin(angle) * r;
-
-    // Wavy, warped disk: a vertical ripple travels outward and a second,
-    // slower swell rolls across so the plane never looks flat.
-    float wave = sin(r * uWaveFreq - uTime * uWaveSpeed + baseAngle * 2.0);
-    float wave2 = cos(r * uWaveFreq * 0.5 + uTime * uWaveSpeed * 0.6 + aSeed * 6.2831);
-    float amp = uWaveAmp * (0.35 + r * 0.22) * (1.0 + uScroll * 0.9);
-    p.y += (wave * 0.7 + wave2 * 0.3) * amp;
-
-    vColor = aColor;
+    // Keep every star at its original position within the spiral. Rotating
+    // stars at different speeds shears the arms into a cloud over time.
+    // A small brightness change provides life without deforming the disk.
+    vColor = aColor * (0.96 + 0.04 * sin(uTime * 0.7 + aSeed * 6.2831));
     vDist = r;
 
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
@@ -75,6 +61,7 @@ export function Galaxy({ count = 60000, arms = 2 }: GalaxyProps) {
   const groupRef = useRef<THREE.Group>(null);
   const matRef = useRef<THREE.ShaderMaterial>(null);
   const { viewport } = useThree();
+  const reducedMotion = useReducedMotion();
 
   const geometry = useMemo(() => {
     const positions = new Float32Array(count * 3);
@@ -165,11 +152,6 @@ export function Galaxy({ count = 60000, arms = 2 }: GalaxyProps) {
     () => ({
       uTime: { value: 0 },
       uSize: { value: 20 },
-      uWaveAmp: { value: 0.22 },
-      uWaveFreq: { value: 1.4 },
-      uWaveSpeed: { value: 0.9 },
-      uSpin: { value: 0.12 },
-      uScroll: { value: 0 },
       uPixelRatio: { value: 1 },
     }),
     []
@@ -178,14 +160,14 @@ export function Galaxy({ count = 60000, arms = 2 }: GalaxyProps) {
   useFrame((state, delta) => {
     if (matRef.current) {
       const u = matRef.current.uniforms;
-      u.uTime.value += delta;
-      u.uScroll.value = scrollState.smooth;
+      if (!reducedMotion) u.uTime.value += Math.min(delta, 0.1);
       u.uPixelRatio.value = Math.min(viewport.dpr || 1, 2);
     }
     if (groupRef.current) {
-      // Gentle overall drift + a scroll-driven tilt toward edge-on.
-      groupRef.current.rotation.y += delta * 0.03;
-      const tilt = -0.5 - scrollState.smooth * 0.55;
+      // Rigid rotation preserves the distance and angle between all stars,
+      // so the same two spiral arms remain intact however long it runs.
+      if (!reducedMotion) groupRef.current.rotation.y += Math.min(delta, 0.1) * 0.018;
+      const tilt = -0.55 - (reducedMotion || cameraState.exploring ? 0 : scrollState.smooth * 0.15);
       groupRef.current.rotation.x +=
         (tilt - groupRef.current.rotation.x) * Math.min(1, delta * 2);
     }

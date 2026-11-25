@@ -1,32 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
+import { cameraState, orbitCamera, zoomCamera } from "./galaxyControls";
+export { cameraState } from "./galaxyControls";
 
 /** Manual orbit offsets layered on top of scroll-driven camera motion. */
-export const cameraState = {
-  azimuth: 0,
-  polar: 0,
-  distance: 0,
-  smoothAzimuth: 0,
-  smoothPolar: 0,
-  smoothDistance: 0,
-  isDragging: false,
-  ctrlActive: false,
-  /** True briefly after a drag ends — blocks accidental click on release. */
-  suppressClick: false,
-};
-
-const LIMITS = {
-  azimuth: [-1.15, 1.15],
-  polar: [-0.6, 0.6],
-  distance: [-2.4, 3.0],
-} as const;
-
 const DRAG_THRESHOLD = 5;
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, value));
-}
 
 function isInteractiveTarget(target: EventTarget | null) {
   if (!(target instanceof Element)) return false;
@@ -68,6 +47,8 @@ export function useCameraControls() {
     let lastY = 0;
     let dragStarted = false;
     let savedOverflow = "";
+    let pageLocked = false;
+    let clickTimer: ReturnType<typeof setTimeout> | undefined;
 
     const setCursor = (cursor: string) => {
       document.body.style.cursor = cursor;
@@ -78,6 +59,8 @@ export function useCameraControls() {
     };
 
     const lockPage = () => {
+      if (pageLocked) return;
+      pageLocked = true;
       document.body.classList.add("galaxy-exploring");
       savedOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
@@ -85,6 +68,8 @@ export function useCameraControls() {
     };
 
     const unlockPage = () => {
+      if (!pageLocked) return;
+      pageLocked = false;
       document.body.classList.remove("galaxy-exploring");
       document.body.style.overflow = savedOverflow;
     };
@@ -98,11 +83,14 @@ export function useCameraControls() {
 
       if (didDrag) {
         cameraState.suppressClick = true;
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(() => { cameraState.suppressClick = false; }, 250);
         clearSelection();
       }
     };
 
     const onKeyDown = (e: KeyboardEvent) => {
+      if (cameraState.exploring) return;
       if (e.key === "Control") {
         cameraState.ctrlActive = true;
         if (!cameraState.isDragging) setCursor("grab");
@@ -117,7 +105,7 @@ export function useCameraControls() {
     };
 
     const onPointerDown = (e: PointerEvent) => {
-      if (!e.ctrlKey || isInteractiveTarget(e.target)) return;
+      if (cameraState.exploring || !e.ctrlKey || isInteractiveTarget(e.target)) return;
 
       pointerId = e.pointerId;
       startX = e.clientX;
@@ -160,16 +148,7 @@ export function useCameraControls() {
       lastX = e.clientX;
       lastY = e.clientY;
 
-      cameraState.azimuth = clamp(
-        cameraState.azimuth + dx * 0.004,
-        LIMITS.azimuth[0],
-        LIMITS.azimuth[1]
-      );
-      cameraState.polar = clamp(
-        cameraState.polar - dy * 0.004,
-        LIMITS.polar[0],
-        LIMITS.polar[1]
-      );
+      orbitCamera(dx * 0.004, -dy * 0.004);
     };
 
     const onPointerUp = (e: PointerEvent) => {
@@ -178,14 +157,10 @@ export function useCameraControls() {
     };
 
     const onWheel = (e: WheelEvent) => {
-      if (!e.ctrlKey) return;
+      if (cameraState.exploring || !e.ctrlKey) return;
       e.preventDefault();
 
-      cameraState.distance = clamp(
-        cameraState.distance + e.deltaY * 0.006,
-        LIMITS.distance[0],
-        LIMITS.distance[1]
-      );
+      zoomCamera(e.deltaY * 0.001);
     };
 
     const onSelectStart = (e: Event) => {
@@ -220,6 +195,8 @@ export function useCameraControls() {
       window.removeEventListener("selectstart", onSelectStart);
       window.removeEventListener("blur", onBlur);
       unlockPage();
+      clearTimeout(clickTimer);
+      cameraState.suppressClick = false;
       setCursor("");
     };
   }, []);

@@ -4,7 +4,11 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Stars, AdaptiveDpr } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import { KernelSize } from "postprocessing";
+import { MotionConfig, useReducedMotion } from "framer-motion";
+import * as THREE from "three";
+import { useRef } from "react";
 import { Galaxy } from "@/components/threeD/Galaxy";
+import { GalaxyExploreButton, GalaxyExplorerProvider, useGalaxyExplorer } from "@/components/threeD/GalaxyExplorer";
 import { scrollState, advanceScroll, useScrollSync } from "@/lib/scrollStore";
 import {
   cameraState,
@@ -21,17 +25,25 @@ function clamp(value: number, min: number, max: number) {
  * the galaxy centre and clamped to a reasonable viewing shell.
  */
 function CameraRig() {
-  const { camera } = useThree();
+  const { camera, size } = useThree();
+  const reducedMotion = useReducedMotion();
+  const initialized = useRef(false);
 
   useFrame((_, delta) => {
     advanceScroll(delta);
     advanceCamera(delta);
 
-    const s = scrollState.smooth;
-
-    const baseX = scrollState.pointerX * 0.6;
-    const baseY = 0.4 + s * 2.6 + scrollState.pointerY * -0.3;
-    const baseZ = 6.2 + s * 3.2;
+    const s = reducedMotion || cameraState.exploring ? 0 : scrollState.smooth;
+    // Fit the whole spiral to the narrower field of view on phones, rather
+    // than pushing a desktop-sized star field through a portrait viewport.
+    const aspect = size.width / Math.max(size.height, 1);
+    const fov = camera instanceof THREE.PerspectiveCamera ? camera.fov : 52;
+    const halfFov = Math.atan(Math.tan(THREE.MathUtils.degToRad(fov / 2)) * Math.min(aspect, 1));
+    const viewingDistance = 5.0 / Math.sin(halfFov);
+    const parallax = !reducedMotion && !cameraState.exploring;
+    const baseX = parallax ? scrollState.pointerX * 0.18 : 0;
+    const baseY = viewingDistance * 0.23 + s * 0.4 + (parallax ? scrollState.pointerY * -0.12 : 0);
+    const baseZ = viewingDistance + s * 0.6;
 
     const baseR = Math.sqrt(baseX * baseX + baseY * baseY + baseZ * baseZ);
     let polar = Math.acos(clamp(baseY / baseR, -1, 1));
@@ -40,18 +52,21 @@ function CameraRig() {
     azimuth += cameraState.smoothAzimuth;
     polar += cameraState.smoothPolar;
 
-    const finalR = clamp(baseR + cameraState.smoothDistance, 3.8, 10.5);
+    const finalR = clamp(baseR * (1 + cameraState.smoothDistance), viewingDistance * 0.55, viewingDistance * 1.7);
     polar = clamp(polar, 0.28, 1.52);
 
     const targetX = finalR * Math.sin(polar) * Math.sin(azimuth);
     const targetY = finalR * Math.cos(polar);
     const targetZ = finalR * Math.sin(polar) * Math.cos(azimuth);
 
-    const k = Math.min(1, delta * 2.2);
+    const k = initialized.current ? Math.min(1, delta * 2.2) : 1;
+    initialized.current = true;
     camera.position.x += (targetX - camera.position.x) * k;
     camera.position.y += (targetY - camera.position.y) * k;
     camera.position.z += (targetZ - camera.position.z) * k;
-    camera.lookAt(0, 0, 0);
+    // As content fills the viewport, let the spiral sit below the copy so
+    // its shape stays visible rather than disappearing behind the panels.
+    camera.lookAt(0, s * viewingDistance * 0.28, 0);
   });
 
   return null;
@@ -62,14 +77,21 @@ export default function BackgroundLayout({
 }: {
   children: React.ReactNode;
 }) {
+  return <GalaxyExplorerProvider><PortfolioScene>{children}</PortfolioScene></GalaxyExplorerProvider>;
+}
+
+function PortfolioScene({ children }: { children: React.ReactNode }) {
   useScrollSync();
   useCameraControls();
+  const reducedMotion = useReducedMotion();
+  const { exploring } = useGalaxyExplorer();
 
   return (
-    <main className="w-full relative">
-      <div className="fixed inset-0 -z-10 h-screen bg-black">
+    <MotionConfig reducedMotion="user">
+    <main id="main-content" className="w-full relative">
+      <div aria-hidden="true" className="fixed inset-0 -z-10 bg-black pointer-events-none">
         <Canvas
-          camera={{ position: [0, 0.4, 6.2], fov: 62 }}
+          camera={{ position: [0, 3, 13], fov: 52 }}
           dpr={[1, 1.5]}
           gl={{
             antialias: false,
@@ -94,12 +116,12 @@ export default function BackgroundLayout({
             factor={4}
             saturation={0}
             fade
-            speed={0.4}
+            speed={reducedMotion ? 0 : 0.15}
           />
 
           <EffectComposer multisampling={0}>
             <Bloom
-              intensity={1.05}
+              intensity={0.9}
               luminanceThreshold={0.35}
               luminanceSmoothing={0.85}
               kernelSize={KernelSize.MEDIUM}
@@ -111,7 +133,11 @@ export default function BackgroundLayout({
           <AdaptiveDpr pixelated />
         </Canvas>
       </div>
-      <div className="relative z-10">{children}</div>
+      <div className={`relative z-10 portfolio-content${exploring ? " portfolio-content-hidden" : ""}`}>
+        <GalaxyExploreButton className="galaxy-launcher" />
+        {children}
+      </div>
     </main>
+    </MotionConfig>
   );
 }

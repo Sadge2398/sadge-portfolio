@@ -1,119 +1,107 @@
-import { motion } from 'framer-motion';
-import { Github, ExternalLink, ArrowLeft } from 'lucide-react';
-import { handleGoBack } from './Utils/Functions';
+"use client";
+
+import Image, { type StaticImageData } from "next/image";
+import { motion } from "framer-motion";
+import { Globe, LockKeyhole, Mail } from "lucide-react";
+import fusionPreview from "@/public/projects/ffusion.jpg";
+import carwashPreview from "@/public/projects/carwash-khodro10.jpg";
 
 interface Project {
   title: string;
+  category: string;
   description: string;
-  technologies: string[];
-  github?: string;
-  demo?: string;
-  image?: string;
+  tags: string[];
+  website?: string;
+  preview?: StaticImageData;
+  previewAlt?: string;
 }
 
 const projects: Project[] = [
   {
+    title: "Fusion Food",
+    category: "Food ordering",
+    description: "Online food ordering with a browsable menu, customizable items, and order tracking.",
+    tags: ["Ordering", "Menu options", "Order tracking"],
+    website: "https://ffusion.ir/",
+    preview: fusionPreview,
+    previewAlt: "Fusion Food homepage with its Persian menu and food photography",
+  },
+  {
+    title: "Carwash Khodro 10",
+    category: "Customer loyalty",
+    description: "A carwash customer club with referral invitations, visit-based rewards, and member discounts.",
+    tags: ["Loyalty", "Referrals", "Rewards"],
+    website: "https://carwashkhodro10.ir/",
+    preview: carwashPreview,
+    previewAlt: "Carwash Khodro 10 customer club showing its referral rewards and invitation feature",
+  },
+  {
     title: "BehKhodro",
-    description: "Web shop. A massive project with a lot of features that supply the needs of a car shop or personal use. first time i get to experice a project with short deadline and a lot of learning as well as delivery pressure.",
-    technologies: ["Nextjs", "TypeScript", "Node.js", "daisyUI", "Zustand"],
-    github: "https://github.com/Sadge2398",
-    demo: "https://private1.demo.com",
+    category: "Automotive e-commerce",
+    description: "An automotive web shop for car shops and individual customers, built under a tight delivery deadline.",
+    tags: ["Next.js", "TypeScript", "Node.js", "Zustand"],
   },
   {
     title: "CyPaaS",
-    description: "Cloud Platform as a Service. A project that provides a platform for developers to build, deploy, and scale their applications in the cloud. very big project spent 6 month to develop it for company.",
-    technologies: ["Nextjs", "TypeScript", "Node.js", "MUI", "MUI Data Grid"],
-    github: "https://github.com/Sadge2398",
-    demo: "https://private1.demo.com",
+    category: "Cloud platform",
+    description: "A cloud platform for building, deploying, and scaling applications, developed over a six-month company project.",
+    tags: ["Next.js", "TypeScript", "Node.js", "MUI"],
   },
-
 ];
 
 export default function Projects() {
   return (
-    <section id="projects" className="min-h-screen py-20">
+    <section id="projects" aria-labelledby="projects-title" className="portfolio-section">
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="container mx-auto px-4 bg-black/50 rounded-lg pb-12 font-bold relative"
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.5 }}
+        className="section-panel"
       >
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          onClick={handleGoBack}
-          className="absolute top-2 left-4 flex items-center gap-2 text-gray-300 hover:text-purple-300 transition-colors p-2 rounded-lg bg-black/40"
-        >
-          <ArrowLeft size={20} />
-          <span>Back</span>
-        </motion.button>
-
-        <h2 className="mb-12 text-4xl font-bold text-white pt-12">Projects</h2>
-
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1,  }}
-              transition={{ duration: 0.7, delay: index * 0.3 }}
-              viewport={{ once: true }}
-              className="group rounded-lg bg-black/45 p-6 transition-all hover:bg-black/55"
-            >
-              {project.image && (
-                <div className="mb-4 overflow-hidden rounded-lg">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full transition-transform duration-300 group-hover:scale-105"
+        <a href="#hero" className="back-link">Back to home</a>
+        <p className="eyebrow mt-7">Selected work</p>
+        <h2 id="projects-title" className="section-title">Projects</h2>
+        <p className="section-intro">A few examples from my work, from local business websites to cloud platforms.</p>
+        <div className="mt-9 grid gap-6 md:grid-cols-2">
+          {projects.map((project) => (
+            <article key={project.title} className="project-card project-card-compact">
+              {project.preview && (
+                <a href={project.website} target="_blank" rel="noopener noreferrer" aria-label={`Preview ${project.title} website`} className="project-preview-link">
+                  <Image
+                    src={project.preview}
+                    alt={project.previewAlt ?? project.title}
+                    className="project-preview"
+                    sizes="(max-width: 767px) 100vw, 520px"
                   />
-                </div>
+                </a>
               )}
-              <h3 className="mb-2 text-2xl font-semibold text-purple-300">
-                {project.title}
-              </h3>
-              <p className="mb-4 text-gray-300">{project.description}</p>
-              <div className="mb-4 flex flex-wrap gap-2">
-                {project.technologies.map((tech) => (
-                  <span
-                    key={tech}
-                    className="rounded-full bg-purple-500/20 px-3 py-1 text-sm text-purple-300"
-                  >
-                    {tech}
-                  </span>
-                ))}
+              <div className="project-card-content">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <p className="text-sm text-purple-200">{project.category}</p>
+                  {!project.website && <span className="private-badge"><LockKeyhole size={13} aria-hidden="true" /> Private project</span>}
+                </div>
+                <h3 className="mt-4 text-2xl font-semibold text-white">{project.title}</h3>
+                <p className="mt-4 leading-relaxed text-slate-300">{project.description}</p>
+                <ul aria-label={`${project.title} highlights`} className="mt-5 flex flex-wrap gap-2">
+                  {project.tags.map((tag) => <li key={tag} className="tech-tag">{tag}</li>)}
+                </ul>
+                <div className="mt-auto border-t border-white/10 pt-4">
+                  {project.website ? (
+                    <a href={project.website} target="_blank" rel="noopener noreferrer" className="project-link" aria-label={`Visit ${project.title} website`}>
+                      <Globe size={17} aria-hidden="true" /> Visit website
+                    </a>
+                  ) : (
+                    <a href={`mailto:sajjadshz14@gmail.com?subject=${encodeURIComponent(`Let's talk about ${project.title}`)}`} className="project-link" aria-label={`Ask about ${project.title}`}>
+                      <Mail size={17} aria-hidden="true" /> Ask about this project
+                    </a>
+                  )}
+                </div>
               </div>
-              <div className="flex gap-4">
-                {project.github && (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-gray-300 transition-colors hover:text-purple-300"
-                  >
-                    <Github size={20} />
-                    <span>Code</span>
-                  </a>
-                )}
-                {project.demo && (
-                  <a
-                    href={project.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-gray-300 transition-colors hover:text-purple-300"
-                  >
-                    <ExternalLink size={20} />
-                    <span>Live Demo</span>
-                  </a>
-                )}
-              </div>
-            </motion.div>
+            </article>
           ))}
         </div>
       </motion.div>
     </section>
   );
-} 
+}
